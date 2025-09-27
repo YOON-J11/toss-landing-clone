@@ -61,6 +61,7 @@ header {
 }
 
 @media screen and (max-width: 638px) {
+
     .header-inner {
         background-color: aqua;
         padding: 0 24px;
@@ -89,13 +90,33 @@ header {
     .mobile-top .line-icon {
         width: 24px;
     }
+
+    /* 아이콘 토글 */
+    .menu-btn .icon-close { display: none; }
+    .is-menu-open .menu-btn .icon-hamburger { display: none; }
+    .is-menu-open .menu-btn .icon-close { display: inline; }
+
+    header {
+        position: sticky;
+        top: 0;
+        z-index: 1100;
+        background-color: #ffffff;
+    }
     .mobile-menu {
-        display: block;
         position: absolute;
         width: 100%;
         top: 100%;
         left: 0;
         background-color: #ffffff;
+        z-index: 1000;
+    }
+    /* 백드롭 */
+    .backdrop { 
+        display: none; 
+        position: fixed; 
+        inset: 0; 
+        background: rgba(0, 0, 0, 0.034); 
+        z-index: 900; 
     }
     .mobile-menu-inner a {
         font-size: 15px;
@@ -120,4 +141,5 @@ header {
     .mobile-lang a.active {
         color: #4e5968;
     }
+
 }
