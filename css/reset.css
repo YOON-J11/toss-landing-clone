@@ -92,8 +92,29 @@ q::after {
   content: '';
 }
 
-/* 테이블 셀 간격 제거 */
-table {
-  border-collapse: collapse;
-  border-spacing: 0;
+
+/*스크롤바 스타일*/
+/* ✅ 크롬 / 엣지 / 사파리용 */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbcfd4;
+  border-radius: 999px;
+  transition: background 0.2s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #515e6f;
+}
+
+/* ✅ 파이어폭스용 */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #cbcfd4 transparent;
 }
