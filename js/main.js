@@ -1,57 +1,81 @@
+// DOM ready
 $(function () {
-    var $root = $('html');
-    var $btn = $('.menu-btn');
-    var $menu = $('#mobileMenu');
-    var BREAKPOINT = 639;
-    var LOCK_SCROLL = true;
+  var $root = $('html');
+  var $btn = $('.menu-btn');
+  var $menu = $('#mobileMenu');
+  var BREAKPOINT = 639;
+  var LOCK_SCROLL = true;
 
-    if ($btn.length === 0 || $menu.length === 0) return;//
+  if ($btn.length === 0 || $menu.length === 0) return;
 
-    function ensureInitial() {
-        if (window.innerWidth < BREAKPOINT) {
-            $menu.hide();
-            $root.removeClass('is-menu-open');
-            $btn.attr({ 'aria-expanded': 'false', 'aria-label': '메뉴 열기' });
-            if (LOCK_SCROLL) $('body').css('overflow', '');
-        }
+  // 초기 상태 정리(모바일일 때 메뉴 닫기)
+  function ensureInitial() {
+    if (window.innerWidth < BREAKPOINT) {
+      $menu.hide();
+      $root.removeClass('is-menu-open');
+      $btn.attr({ 'aria-expanded': 'false', 'aria-label': '메뉴 열기' });
+      if (LOCK_SCROLL) $('body').css('overflow', '');
     }
+  }
 
-    function openMenu() {
-        $menu.stop(true, true).slideDown(220);
-        $root.addClass('is-menu-open');
-        $btn.attr({ 'aria-expanded': 'true', 'aria-label': '메뉴 닫기' });
-        if (LOCK_SCROLL) $('body').css('overflow', 'hidden');
-    }
-    function closeMenu() {
-        $menu.stop(true, true).slideUp(200);
-        $root.removeClass('is-menu-open');
-        $btn.attr({ 'aria-expanded': 'false', 'aria-label': '메뉴 열기' });
-        if (LOCK_SCROLL) $('body').css('overflow', '');
-    }
-    function toggleMenu(e) {
-        e.preventDefault();
-        $root.hasClass('is-menu-open') ? closeMenu() : openMenu();
-    }
+  // 메뉴 열기
+  function openMenu() {
+    $menu.stop(true, true).slideDown(220);
+    $root.addClass('is-menu-open');
+    $btn.attr({ 'aria-expanded': 'true', 'aria-label': '메뉴 닫기' });
+  }
 
-    $btn.on('click', toggleMenu);
-    $('#mobileMenu a').on('click', closeMenu);
+  // 메뉴 닫기
+  function closeMenu() {
+    $menu.stop(true, true).slideUp(200);
+    $root.removeClass('is-menu-open');
+    $btn.attr({ 'aria-expanded': 'false', 'aria-label': '메뉴 열기' });
+    if (LOCK_SCROLL) $('body').css('overflow', '');
+  }
 
-    // 바깥 클릭 닫기
-    $(document).on('click', function (e) {
-        if (!$root.hasClass('is-menu-open')) return;
-        if ($(e.target).closest('#mobileMenu, .menu-btn, .mobile-top').length) return;
-        closeMenu();
-    });
+  // 메뉴 토글 핸들러
+  function toggleMenu(e) {
+    e.preventDefault();
+    $root.hasClass('is-menu-open') ? closeMenu() : openMenu();
+  }
 
-    // ESC 닫기
-    $(document).on('keydown', function (e) {
-        if (e.key === 'Escape' && $root.hasClass('is-menu-open')) closeMenu();
-    });
+  // 버튼 클릭 시 토글
+  $btn.on('click', toggleMenu);
 
-    // 리사이즈: 데스크탑 가면 닫기
-    $(window).on('resize', function () {
-        if (window.innerWidth >= BREAKPOINT && $root.hasClass('is-menu-open')) closeMenu();
-    });
+  // 모바일 메뉴 링크 클릭 시 닫기
+  $('#mobileMenu a').on('click', closeMenu);
 
-    ensureInitial();
+  // 바깥 클릭 시 닫기
+  $(document).on('click', function (e) {
+    if (!$root.hasClass('is-menu-open')) return;
+    if ($(e.target).closest('#mobileMenu, .menu-btn, .mobile-top').length) return;
+    closeMenu();
+  });
+
+  // ESC 키로 닫기
+  $(document).on('keydown', function (e) {
+    if (e.key === 'Escape' && $root.hasClass('is-menu-open')) closeMenu();
+  });
+
+  // 리사이즈 시 상태 정리(데스크톱 전환 시 강제 닫기)
+  $(window).on('resize', function () {
+    if (window.innerWidth >= BREAKPOINT && $root.hasClass('is-menu-open')) closeMenu();
+  });
+
+  // 초기 실행
+  ensureInitial();
+
+  // 스크롤다운
+  $(document).on('click', '.scroll-down-btn', function (e) {
+    e.preventDefault();
+    var href = $(this).attr('href') || '#container2';
+    var id = href.replace(/^#/, '');
+    var $t = $('#' + id);
+    if (!$t.length) return;
+
+    var headerH = $('header').outerHeight() || 0;
+    var y = $t.offset().top - headerH;
+
+    $('html, body').stop(true).animate({ scrollTop: y }, 500, 'swing');
+  });
 });
