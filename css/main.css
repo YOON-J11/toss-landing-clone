@@ -1,11 +1,15 @@
 header {
     height: 60px;
-    background-color: antiquewhite;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: #fff;
+    z-index: 1100;
+    width: 100%;
 }
 .header-inner {
     max-width: 1140px;
     height: 100%;
-    background-color: pink;
     margin: 0 auto;
     display: flex;
     justify-content: space-between;
@@ -59,11 +63,79 @@ header {
 .mobile-menu {
     display: none;
 }
+main {
+    margin-top: 60px;
+}
+.container1 {
+    text-align: center;
+    width: 100%;
+    min-height: calc(100svh - 60px);
+    background: linear-gradient(to bottom, white 0%, transparent 50%),
+                url('/assets/img/new_main.png') center / cover no-repeat;
+    position: relative;
+}
+.container1 h1 {
+    font-size: 66px;
+    max-width: 600px;
+    display: inline-block;
+    margin: 170px 0 50px 0;
+}
+.container1-btn-area {
+    display: flex;
+    gap: 4px;
+     justify-content: center;
+}
+.download-btn {
+    display: none;
+}
+.app-store-btn {
+    display: flex;
+    gap: 6px;
+    font-size: 17px;
+    padding: 11px 22px;
+    background-color: #000C1ECC;
+    color: #fff;
+    border-radius: 7px;
+    font-weight: 600;
+}
+.app-store-btn:hover {
+    background-color: #37455bde;
+}
+
+.app-store-btn img {
+    width: 24px;
+    height: 24px;
+}
+
+.scroll-down-btn { 
+    color:#141725;
+    position: absolute;
+    bottom: 30px;
+    cursor: pointer;
+}
+.scroll-down-btn svg {
+    width: 50px;
+    opacity: 0.3;
+    animation: 
+        arrow-bob 0.5s ease-in-out infinite alternate,
+        arrow-fade 2s ease-in-out infinite;
+    transform: translateY(0);
+}
+.scroll-down-btn svg path{ 
+    fill: currentColor; 
+}
+@keyframes arrow-bob {
+    from { transform: translateY(0); }
+    to { transform: translateY(12px); }
+}
+@keyframes arrow-fade {
+    0%, 100% {opacity: 0;}
+    25%, 75% {opacity: 0.3;}
+}
 
 @media screen and (max-width: 638px) {
 
     .header-inner {
-        background-color: aqua;
         padding: 0 24px;
         position: relative;
     }
@@ -109,14 +181,6 @@ header {
         left: 0;
         background-color: #ffffff;
         z-index: 1000;
-    }
-    /* 백드롭 */
-    .backdrop { 
-        display: none; 
-        position: fixed; 
-        inset: 0; 
-        background: rgba(0, 0, 0, 0.034); 
-        z-index: 900; 
     }
     .mobile-menu-inner a {
         font-size: 15px;

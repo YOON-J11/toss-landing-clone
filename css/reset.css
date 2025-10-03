@@ -46,6 +46,8 @@ body {
   word-break: keep-all;
   overflow-wrap: break-word;
   line-height: 1.5;
+  margin: 0;
+  padding: 0;
 }
 
 /* HTML5 요소를 블록화 (구형 브라우저 대응) */
