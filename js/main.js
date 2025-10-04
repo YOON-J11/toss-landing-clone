@@ -79,3 +79,12 @@ $(function () {
     $('html, body').stop(true).animate({ scrollTop: y }, 500, 'swing');
   });
 });
+
+// lottie 애니메이션
+lottie.loadAnimation({
+  container: document.getElementById('lottie-container'),
+  renderer: 'svg',
+  loop: true,
+  autoplay: true,
+  path: './loan-ui.json' // 파일이 index.html과 같은 폴더에 있다고 가정
+});
