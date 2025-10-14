@@ -88,3 +88,51 @@ lottie.loadAnimation({
   autoplay: true,
   path: './loan-ui.json' // 파일이 index.html과 같은 폴더에 있다고 가정
 });
+
+
+//content8 커버 애니메이션
+document.addEventListener('DOMContentLoaded', function () {
+  const section = document.querySelector('.container8');
+  const left    = document.querySelector('.cover-left');
+  const right   = document.querySelector('.cover-right');
+  if (!section || !left || !right) return;
+
+  const INITIAL_GAP_PX = 900;
+  const COMPLETE_AT    = 0.5;
+
+  const clamp = (n, a, b) => Math.max(a, Math.min(b, n));
+  let ticking = false;
+
+  function progressByViewport() {
+    const r  = section.getBoundingClientRect();
+    const vh = window.innerHeight;
+    const total = vh + r.height;
+    const seen  = vh - r.top;
+    return clamp(seen / total, 0, 1);
+  }
+
+  function update() {
+    const t0 = progressByViewport(); 
+    const t  = clamp(t0 / COMPLETE_AT, 0, 1);
+
+    const W = section.clientWidth || window.innerWidth;
+    const p = clamp((INITIAL_GAP_PX / W) * 100, 0, 100);
+
+    const leftX  = -(p + (100 - p) * t);
+    const rightX =  +(p + (100 - p) * t);
+
+    left.style.transform  = `translate3d(${leftX}%, 0, 0)`;
+    right.style.transform = `translate3d(${rightX}%, 0, 0)`;
+    ticking = false;
+  }
+
+  function onScrollOrResize() {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(update);
+  }
+
+  window.addEventListener('scroll',  onScrollOrResize, { passive: true });
+  window.addEventListener('resize',  onScrollOrResize, { passive: true });
+  update();
+});
