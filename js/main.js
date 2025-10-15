@@ -3,7 +3,7 @@ $(function () {
   var $root = $('html');
   var $btn = $('.menu-btn');
   var $menu = $('#mobileMenu');
-  var BREAKPOINT = 639;
+  var BREAKPOINT = 740;
   var LOCK_SCROLL = true;
 
   if ($btn.length === 0 || $menu.length === 0) return;
@@ -92,15 +92,16 @@ lottie.loadAnimation({
 
 //content8 커버 애니메이션
 document.addEventListener('DOMContentLoaded', function () {
+  const BREAKPOINT = 740;
+  if (window.innerWidth <= BREAKPOINT) return; // ← 모바일이면 바로 종료
+
   const section = document.querySelector('.container8');
   const left    = document.querySelector('.cover-left');
   const right   = document.querySelector('.cover-right');
   if (!section || !left || !right) return;
 
-  const INITIAL_GAP_PX = 900;
-  const COMPLETE_AT    = 0.5;
-
-  const clamp = (n, a, b) => Math.max(a, Math.min(b, n));
+  const COMPLETE_AT = 0.5;
+  const clamp = (n,a,b)=>Math.max(a,Math.min(b,n));
   let ticking = false;
 
   function progressByViewport() {
@@ -112,27 +113,27 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   function update() {
-    const t0 = progressByViewport(); 
-    const t  = clamp(t0 / COMPLETE_AT, 0, 1);
+    const t  = clamp(progressByViewport() / COMPLETE_AT, 0, 1);
+    const p  = 50 + 50 * t; // 50% → 100%
 
-    const W = section.clientWidth || window.innerWidth;
-    const p = clamp((INITIAL_GAP_PX / W) * 100, 0, 100);
+    const leftClip  = `inset(0 ${p}% 0 0)`;
+    const rightClip = `inset(0 0 0 ${p}%)`;
+    left.style.clipPath = leftClip;
+    right.style.clipPath = rightClip;
+    left.style.webkitClipPath = leftClip;
+    right.style.webkitClipPath = rightClip;
 
-    const leftX  = -(p + (100 - p) * t);
-    const rightX =  +(p + (100 - p) * t);
-
-    left.style.transform  = `translate3d(${leftX}%, 0, 0)`;
-    right.style.transform = `translate3d(${rightX}%, 0, 0)`;
     ticking = false;
   }
 
-  function onScrollOrResize() {
+  function onScrollOrResize(){
     if (ticking) return;
     ticking = true;
     requestAnimationFrame(update);
   }
 
-  window.addEventListener('scroll',  onScrollOrResize, { passive: true });
-  window.addEventListener('resize',  onScrollOrResize, { passive: true });
+  window.addEventListener('scroll', onScrollOrResize, {passive:true});
+  window.addEventListener('resize', onScrollOrResize, {passive:true});
   update();
 });
+
