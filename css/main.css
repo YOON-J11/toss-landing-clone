@@ -179,6 +179,11 @@ main {
     font-weight: 700;
 }
 
+.container3,
+.container5 {
+  overflow-x: hidden; /* 틀어짐 : 가로 스크롤 원천 차단 */
+}
+
 .container3 {
     height: 1687px;
     box-sizing: border-box;
@@ -215,12 +220,13 @@ main {
 
 .cont3-img1 {
     top: -20px;
-    right: -118px
+    right: 0;
 }
 
 .cont3-img2 {
     top: 330px;
-    left: -118px;
+    left: 0;
+    transform: translateX(-120px);
 }
 
 .phone_screen {
@@ -496,7 +502,6 @@ main {
 .cont9-box {
     display: flex;
     flex-direction: column;
-    background-color: #3182f6;
     margin-bottom: 210px;
 }
 .cont9-box:last-child {
@@ -518,6 +523,7 @@ main {
     line-height: 1.5;
     color: #333d4b;
 }
+
 .cont9-box1 img {
     width: 100%;
     max-width: 740px;
@@ -547,6 +553,23 @@ main {
 .cont9-box3 .cont9-box-text {
     display: flex;
     justify-content: space-between;
+}
+
+/*페이드인효과*/
+.container9 [data-fade]{
+  opacity: var(--o, 0);
+  transform: translate3d(0, var(--ty, 0px), 0);
+  will-change: opacity, transform;
+  transition: none !important; /* 토글형 애니랑 충돌 방지 */
+}
+
+.cont9-box1.is-in {
+  opacity: 1;
+}
+.cont9-box2 > div.is-in,
+.cont9-box3.is-in {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 @keyframes arrow-bob {
@@ -946,5 +969,11 @@ main {
     .cont9-box2 > div:nth-child(2) img {
         width: 100%;
         margin-bottom: 30px;
+    }
+    .cont9-box3 img {
+        margin-bottom: 30px;
+    }
+    .cont9-box3 .cont9-box-text {
+        flex-direction: column;
     }
 }

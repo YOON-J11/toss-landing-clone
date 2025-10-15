@@ -86,14 +86,14 @@ lottie.loadAnimation({
   renderer: 'svg',
   loop: true,
   autoplay: true,
-  path: './loan-ui.json' // 파일이 index.html과 같은 폴더에 있다고 가정
+  path: './loan-ui.json'
 });
 
 
 //content8 커버 애니메이션
 document.addEventListener('DOMContentLoaded', function () {
   const BREAKPOINT = 740;
-  if (window.innerWidth <= BREAKPOINT) return; // ← 모바일이면 바로 종료
+  if (window.innerWidth <= BREAKPOINT) return; //  모바일이면 바로 종료
 
   const section = document.querySelector('.container8');
   const left    = document.querySelector('.cover-left');
@@ -135,5 +135,61 @@ document.addEventListener('DOMContentLoaded', function () {
   window.addEventListener('scroll', onScrollOrResize, {passive:true});
   window.addEventListener('resize', onScrollOrResize, {passive:true});
   update();
+});
+
+// content9 스크롤 애니메이션
+document.addEventListener('DOMContentLoaded', () => {
+  const targets = Array.from(document.querySelectorAll('.container9 [data-fade]'));
+  if (targets.length === 0) return;
+
+  const MIN_OPACITY = 0.15;
+  const MAX_SHIFT_FALLOFF = 1.0;
+  const ENTER_OFFSET = 0.70;
+
+  const clamp = (n, a, b) => Math.max(a, Math.min(b, n));
+  const easeOutCubic = t => 1 - Math.pow(1 - t, 2.2);
+
+  targets.forEach(el => {
+    const shift = parseFloat(el.dataset.shift || '20');
+    el.style.setProperty('--o', '0');
+    el.style.setProperty('--ty', `${shift}px`);
+  });
+
+  let ticking = false;
+  function update() {
+    const vh = window.innerHeight || document.documentElement.clientHeight;
+
+    targets.forEach(el => {
+      const rect = el.getBoundingClientRect();
+      const shift = parseFloat(el.dataset.shift || '20');
+
+      const start = vh * ENTER_OFFSET;
+      const end   = vh * (1 - (1-ENTER_OFFSET));
+
+      const elCenter = rect.top + rect.height / 2;
+
+      const raw = clamp((start - (elCenter - center)) / (vh * MAX_SHIFT_FALLOFF), 0, 1);
+      const t = easeOutCubic(raw); // 부드럽게
+
+      const opacity = MIN_OPACITY + (1 - MIN_OPACITY) * t;
+      const ty = (1 - t) * shift;
+
+      el.style.setProperty('--o', opacity.toFixed(3));
+      el.style.setProperty('--ty', `${ty.toFixed(1)}px`);
+    });
+
+    ticking = false;
+  }
+
+  function onScrollOrResize(){
+    if (!ticking){
+      ticking = true;
+      requestAnimationFrame(update);
+    }
+  }
+
+  update();
+  window.addEventListener('scroll', onScrollOrResize, { passive: true });
+  window.addEventListener('resize', onScrollOrResize, { passive: true });
 });
 
