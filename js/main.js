@@ -80,6 +80,8 @@ $(function () {
   });
 });
 
+
+
 // lottie 애니메이션
 lottie.loadAnimation({
   container: document.getElementById('lottie-container'),
@@ -157,29 +159,30 @@ document.addEventListener('DOMContentLoaded', () => {
 
   let ticking = false;
   function update() {
-    const vh = window.innerHeight || document.documentElement.clientHeight;
+  const vh = window.innerHeight || document.documentElement.clientHeight;
+  const center = vh * 0.5;
 
-    targets.forEach(el => {
-      const rect = el.getBoundingClientRect();
-      const shift = parseFloat(el.dataset.shift || '20');
+  targets.forEach(el => {
+    const rect = el.getBoundingClientRect();
+    const shift = parseFloat(el.dataset.shift || '20');
 
-      const start = vh * ENTER_OFFSET;
-      const end   = vh * (1 - (1-ENTER_OFFSET));
+    const start = vh * ENTER_OFFSET;
+    const end   = vh * (1 - (1-ENTER_OFFSET));
+    const elCenter = rect.top + rect.height / 2;
 
-      const elCenter = rect.top + rect.height / 2;
+    const raw = clamp((start - (elCenter - center)) / (vh * MAX_SHIFT_FALLOFF), 0, 1);
+    const t = easeOutCubic(raw);
 
-      const raw = clamp((start - (elCenter - center)) / (vh * MAX_SHIFT_FALLOFF), 0, 1);
-      const t = easeOutCubic(raw); // 부드럽게
+    const opacity = MIN_OPACITY + (1 - MIN_OPACITY) * t;
+    const ty = (1 - t) * shift;
 
-      const opacity = MIN_OPACITY + (1 - MIN_OPACITY) * t;
-      const ty = (1 - t) * shift;
+    el.style.setProperty('--o', opacity.toFixed(3));
+    el.style.setProperty('--ty', `${ty.toFixed(1)}px`);
+  });
 
-      el.style.setProperty('--o', opacity.toFixed(3));
-      el.style.setProperty('--ty', `${ty.toFixed(1)}px`);
-    });
+  ticking = false;
+}
 
-    ticking = false;
-  }
 
   function onScrollOrResize(){
     if (!ticking){
