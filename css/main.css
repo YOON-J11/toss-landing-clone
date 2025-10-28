@@ -99,7 +99,7 @@ main {
     width: 100%;
     min-height: calc(100svh - 60px);
     background: linear-gradient(to bottom, white 0%, transparent 50%),
-        url('/assets/img/new_main.png') center / cover no-repeat;
+        url('../assets/img/new_main.png') center / cover no-repeat;
     position: relative;
     padding: 0 29px;
 }
@@ -456,7 +456,7 @@ main {
     position: relative;
 
     height: 800px;
-    background: url(/assets/img/section2_4_big.jpg) no-repeat center center;
+    background: url(../assets/img/section2_4_big.jpg) no-repeat center center;
     background-size: cover;
 
     display: flex;
@@ -1204,7 +1204,7 @@ footer {
     }
     
     .container8 {
-        background-image: url('/assets/img/section2_4_big_mobile.png');
+        background-image: url('../assets/img/section2_4_big_mobile.png');
         background-size: contain;
         height: 665px;
         background-position: center;
